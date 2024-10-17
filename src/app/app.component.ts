@@ -1,7 +1,9 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   Inject,
   InjectionToken,
@@ -30,21 +32,29 @@ import { APP_CONFIG, AppConfig, CONFIG_TOKEN } from "./configurazioniApp";
 })
 
 // la CHANGE DETECTION è un meccanismo con il quale ng ricostruisce la view ogni volta che il model cambia
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
   // se faccio arrivare i dati tramite assegnazione di observable a questa variabile, che all'inizio è undefined, non li vedrò sullo schermo perchè non si avvera nessuno dei 3 casi per cui la change detection OnPush ritiene che debbano essere renderizzati
   // courses: Course[] = COURSES;
   courses: Course[];
 
-  courses$: Observable<Course[]>;
+  courses$: Observable<Course[]>; // valore assegnato ricevndo lìobservable tramite chiamata con HttpClient direttamente dal componente
 
-  coursesService$: Observable<Course[]>;
+  coursesService$: Observable<Course[]>; // valore assegnato ricevendo l'observable tramite service
 
+  // ogni componente di NG ha a disposizione un ChangeDetector che può essere iniettato ed utilizzato per dichiarare manualmente che qualcosa deve essere controllato da ng
   constructor(
     private http: HttpClient,
     @Optional() private coursesService: CoursesService,
-    @Inject(CONFIG_TOKEN) private configObject: AppConfig
+    @Inject(CONFIG_TOKEN) private configObject: AppConfig,
+    private changeDetector: ChangeDetectorRef
   ) {
     console.log(configObject);
+  }
+
+  ngDoCheck(): void {
+    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
+    //Add 'implements DoCheck' to the class.
+    this.changeDetector.markForCheck();
   }
 
   ngOnInit() {
@@ -56,6 +66,12 @@ export class AppComponent implements OnInit {
       .subscribe((valore) => {
         console.log(valore);
         this.courses = valore;
+
+        // utilizzo il metodo markForCheck del change detector per dire ad ng che questo componente deve essere controllato
+        // ora i dati passati alla variabile courses, pur non essendo uno dei 3 casi in cui la changedetection OnPush controlla e renderizza qualcosa, verrano visualizzati a schermo
+        // il controllo viene effettuato ogni volta che l'observable viene emesso
+        // il modo corretto di utilizzare questo metodo per customizzare la change detection, non è mettendolo qui, ma all'interno del lyfecycle hook DoCheck
+        // this.changeDetector.markForCheck();
       });
 
     // la variabile courses$ è un observable che viene sottoscritto nel template tramite pipe async
