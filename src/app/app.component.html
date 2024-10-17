@@ -6,7 +6,20 @@
 </div>
 
 <div>
+  <!-- voglio mostrare i dati provenienti dalla variabile courses che è undefined all'inizio e dopo viene valorizzata tramite assegnazione di observable -->
+  <!-- non viene renderizzato nulla sullo schermo con la change detection OnPush -->
   <div class="courses">
+    <course-card
+      *ngFor="let course of courses"
+      [course]="course"
+      (courseChanged)="onCourseChanged($event)"
+    >
+      <course-image [src]="course.iconUrl"></course-image>
+    </course-card>
+  </div>
+
+  <!-- questi invece li vedo perchè courses$ è un observable e viene sottoscritto nel template tramite pipe async -->
+  <div class="courses" *ngIf="courses$ | async as courses">
     <course-card
       *ngFor="let course of courses"
       [course]="course"

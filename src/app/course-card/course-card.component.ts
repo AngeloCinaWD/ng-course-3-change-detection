@@ -21,7 +21,7 @@ import { CoursesService } from "../services/courses.service";
   selector: "course-card",
   templateUrl: "./course-card.component.html",
   styleUrls: ["./course-card.component.css"],
-  // se il nostro compoennte utilizza il metodo OnPUsh per il rilevamento delle modifiche, ng non analizzerà ogni espressione del template per rilevare modifiche, cercherà di rilevare i cambiamenti nei dati di @Input del componente
+  // se il nostro componente utilizza il metodo OnPUsh per il rilevamento delle modifiche, ng non analizzerà ogni espressione del template per rilevare modifiche, cercherà di rilevare i cambiamenti nei dati di @Input del componente
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseCardComponent implements OnInit {
