@@ -25,6 +25,8 @@ import { APP_CONFIG, AppConfig, CONFIG_TOKEN } from "./configurazioniApp";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
+
+// la CHANGE DETECTION è un meccanismo con il quale ng ricostruisce la view ogni volta che il model cambia
 export class AppComponent implements OnInit {
   courses: Course[] = COURSES;
 

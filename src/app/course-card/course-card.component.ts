@@ -44,4 +44,12 @@ export class CourseCardComponent implements OnInit {
   onSaveClicked(description: string) {
     this.courseEmitter.emit({ ...this.course, description });
   }
+
+  // ogni volta che viene chiamato questo metodo, il titolo del corso cambia
+  // ogni volta si attiva la change detection di ng, dopo ogni evento gestito da ng, viene controllato tutto il componente e viene valutato cosa è cambiato rispetto a prima dell'evento
+  // L'unico modo che Angular ha per essere sicuro che la vista rifletta sempre correttamente i dati è eseguire nuovamente tutti questi controlli e aggiornare i componenti ogni volta che è necessario.
+  //
+  onTitleChanged(newTitle: string) {
+    this.course.description = newTitle;
+  }
 }

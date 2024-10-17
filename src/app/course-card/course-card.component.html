@@ -7,7 +7,13 @@
 
   <div class="course-description">
     <!-- nel tag input definisco una reference template, questa mi permette di prendere il valore passato nell'input con referenceTemplate.value -->
-    Edit Title: <input #courseTitle [value]="course.description" />
+    <!-- creo un metodo che mi vada a modificare il titolo del corso mentre lo digito nell'input -->
+    Edit Title:
+    <input
+      #courseTitle
+      [value]="course.description"
+      (keyup)="onTitleChanged(courseTitle.value)"
+    />
   </div>
 
   <div class="course-category" [ngSwitch]="course.category">
