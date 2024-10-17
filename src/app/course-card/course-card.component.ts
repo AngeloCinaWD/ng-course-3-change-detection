@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -20,6 +21,8 @@ import { CoursesService } from "../services/courses.service";
   selector: "course-card",
   templateUrl: "./course-card.component.html",
   styleUrls: ["./course-card.component.css"],
+  // se il nostro compoennte utilizza il metodo OnPUsh per il rilevamento delle modifiche, ng non analizzerà ogni espressione del template per rilevare modifiche, cercherà di rilevare i cambiamenti nei dati di @Input del componente
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseCardComponent implements OnInit {
   @Input()
@@ -48,7 +51,8 @@ export class CourseCardComponent implements OnInit {
   // ogni volta che viene chiamato questo metodo, il titolo del corso cambia
   // ogni volta si attiva la change detection di ng, dopo ogni evento gestito da ng, viene controllato tutto il componente e viene valutato cosa è cambiato rispetto a prima dell'evento
   // L'unico modo che Angular ha per essere sicuro che la vista rifletta sempre correttamente i dati è eseguire nuovamente tutti questi controlli e aggiornare i componenti ogni volta che è necessario.
-  //
+  // di defaul la change detection di NG confronta l'ultimo valore di un oggetto mutabile di js con quello che c'è dopo un evento e controlla se è cambiato e se rileva una differenza aggiorna la view
+  // possiamo cambiare il comportamento della change detection con la proprietà changeDetection del decoratore @Component
   onTitleChanged(newTitle: string) {
     this.course.description = newTitle;
   }
