@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
   AfterViewInit,
+  Attribute,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -35,7 +36,10 @@ export class CourseCardComponent implements OnInit {
   @Output("courseChanged")
   courseEmitter = new EventEmitter<Course>();
 
-  constructor() {}
+  // ricevo il valore passato dal parent component nell'attributo type invece che riceverlo come @Input, in questo modo la change detection non andrà a controllare se ci sono state modifiche in questo input
+  constructor(@Attribute("type") private type: string) {
+    console.log(type);
+  }
 
   ngOnInit() {}
 
